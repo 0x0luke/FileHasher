@@ -10,10 +10,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import javax.swing.JFileChooser;
 
 public class GUI extends Frame {
 	
@@ -61,9 +61,9 @@ public class GUI extends Frame {
 				Button ReturnStart = new Button("Main Menu");
 				Label StringLabel = new Label("Choose the file to be hashed: ");
 				TextField FileToHash = new TextField();
-				JFileChooser FileChooser = new JFileChooser();
+				Label AlreadyExists = new Label("Hash already exists!");
 				
-				FileChooser.setMultiSelectionEnabled(false);
+				//FileChooser.setMultiSelectionEnabled(false);
 				
 		    	
 				TSHA1.setBounds(100,500,100,50);
@@ -72,6 +72,7 @@ public class GUI extends Frame {
 				ReturnStart.setBounds(250, 450, 100, 50);
 				StringLabel.setBounds(50, 240, 200, 50);
 				FileToHash.setBounds(250, 250, 200, 30);
+				AlreadyExists.setBounds(250, 300, 200, 30);
 				//FileChooser.setBounds(250,250,200,30);
 				
 				FileHasher.add(TSHA1);
@@ -159,14 +160,29 @@ public class GUI extends Frame {
 							} catch (IOException e2) {
 								e2.printStackTrace();
 							}
-			        		BufferedWriter bw = new BufferedWriter(fw);
-			        		
-			        		
-			        		try {
-			        				bw.write(content + "\n");
-								bw.close();
-							} catch (IOException e1) {
-								e1.printStackTrace();
+							
+							byte[] bytes = null;
+							try {
+								bytes = Files.readAllBytes(Paths.get(path));
+							} catch (IOException e2) {
+								e2.printStackTrace();
+							}
+							String TextExist = new String(bytes);
+
+							// Check if the name is contained
+							if(TextExist.indexOf(content) != -1){
+								FileHasher.add(AlreadyExists);
+							} else {
+								
+								FileHasher.remove(AlreadyExists);
+								BufferedWriter bw = new BufferedWriter(fw);
+								
+								try {
+									bw.write(content + "\n");
+									bw.close();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 							}
 			         }
 			      });
@@ -226,13 +242,30 @@ public class GUI extends Frame {
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
-							BufferedWriter bw = new BufferedWriter(fw);
 							
+							
+							byte[] bytes = null;
 							try {
-								bw.write(content + "\n");
-								bw.close();
-							} catch (IOException e1) {
-								e1.printStackTrace();
+								bytes = Files.readAllBytes(Paths.get(path));
+							} catch (IOException e2) {
+								e2.printStackTrace();
+							}
+							String TextExist = new String(bytes);
+
+							// Check if the name is contained
+							if(TextExist.indexOf(content) != -1){
+								FileHasher.add(AlreadyExists);
+							} else {
+								
+								FileHasher.remove(AlreadyExists);
+								BufferedWriter bw = new BufferedWriter(fw);
+								
+								try {
+									bw.write(content + "\n");
+									bw.close();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 							}
 			         }
 	      });
@@ -254,6 +287,7 @@ public class GUI extends Frame {
 				Label StringLabel = new Label("Enter the String to be hashed: ");
 				TextField StringToHash = new TextField();
 				Label HashedString = new Label();
+				Label AlreadyExists = new Label("Hash already exists!");
 				
 				
 		    	
@@ -264,6 +298,7 @@ public class GUI extends Frame {
 				StringLabel.setBounds(50, 240, 200, 50);
 				StringToHash.setBounds(250, 250, 200, 30);
 				HashedString.setBounds(350 ,350,200,30);
+				AlreadyExists.setBounds(250, 300, 200, 30);
 				
 				TextHasher.add(TSHA1);
 				TextHasher.add(TMD5);
@@ -334,18 +369,30 @@ public class GUI extends Frame {
 									e1.printStackTrace();
 								}
 								
-			        			BufferedWriter bw = new BufferedWriter(fw);
-			        			
-			        			
-			        			try {
-									bw.write(content + "\n");
-									bw.newLine();
-									bw.close();
-								} catch (IOException e1) {
-									e1.printStackTrace();
+								byte[] bytes = null;
+								try {
+									bytes = Files.readAllBytes(Paths.get(path));
+								} catch (IOException e2) {
+									e2.printStackTrace();
 								}
-			        			
-			        			}
+								String TextExist = new String(bytes);
+
+								// Check if the name is contained
+								if(TextExist.indexOf(content) != -1){
+									TextHasher.add(AlreadyExists);
+								} else {
+									
+									TextHasher.remove(AlreadyExists);
+									BufferedWriter bw = new BufferedWriter(fw);
+									
+									try {
+										bw.write(content + "\n");
+										bw.close();
+									} catch (IOException e1) {
+										e1.printStackTrace();
+									}
+								}
+				         }
 			      });
 				
 				TSHA1.addActionListener(new ActionListener() {
@@ -389,17 +436,30 @@ public class GUI extends Frame {
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-			    		BufferedWriter bw = new BufferedWriter(fw);
-			    		
-			    		try {
-							bw.write(content + "\n");
-							bw.newLine();
-							bw.close();
-						} catch (IOException e1) {
-							e1.printStackTrace();
+						byte[] bytes = null;
+						try {
+							bytes = Files.readAllBytes(Paths.get(path));
+						} catch (IOException e2) {
+							e2.printStackTrace();
 						}
-			    		
-			    		}
+						String TextExist = new String(bytes);
+
+						// Check if the name is contained
+						if(TextExist.indexOf(content) != -1){
+							TextHasher.add(AlreadyExists);
+						} else {
+							
+							TextHasher.remove(AlreadyExists);
+							BufferedWriter bw = new BufferedWriter(fw);
+							
+							try {
+								bw.write(content + "\n");
+								bw.close();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+		         }
 				});
 	         }
 		});
